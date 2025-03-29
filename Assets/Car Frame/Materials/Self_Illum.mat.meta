@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0570cb6229bfbcc4d801b9fdda1825b3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Materials/Self_Illum.mat
+  uploadId: 539636

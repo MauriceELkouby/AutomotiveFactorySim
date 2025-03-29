@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 580982cea372725459d22bed414f8ff7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Animations/cam_anim.anim
+  uploadId: 539636

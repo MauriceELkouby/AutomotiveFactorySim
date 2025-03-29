@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5c8c543f3fd13f2458f55f4ba91fe13e
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Scenes/car_frame_hdrp.unity
+  uploadId: 539636

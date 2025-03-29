@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: eb7fd27582abc1f41b8e1a9fb7108963
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Render Pipelines/car_frame_2020.3_URP.unitypackage
+  uploadId: 539636

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 24c12660ec8b8fd4ab8c059a9fdca216
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Settings/HDRPHighQuality.asset
+  uploadId: 539636

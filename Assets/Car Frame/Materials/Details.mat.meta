@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 22d8aae4f6cf7bb45a73ee2cab61d0d0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Materials/Details.mat
+  uploadId: 539636

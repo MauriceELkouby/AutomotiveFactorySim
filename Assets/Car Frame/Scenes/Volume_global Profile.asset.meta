@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3e420fc51f48c53439f49d5244668cbc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Scenes/Volume_global Profile.asset
+  uploadId: 539636

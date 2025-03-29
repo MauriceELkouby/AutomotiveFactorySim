@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a7f88909c6dbcc742af2e5eb0bdba226
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Scenes/Lighting Settings.lighting
+  uploadId: 539636

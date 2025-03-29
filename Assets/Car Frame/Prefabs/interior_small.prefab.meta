@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b2df62fc55bf69a45ae2e038087d6e49
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 237792
+  packageName: Electric car frame and chassis
+  packageVersion: 1.0
+  assetPath: Assets/Car Frame/Prefabs/interior_small.prefab
+  uploadId: 539636
