@@ -8,6 +8,7 @@ public class ConveyorMotion : MonoBehaviour
 
     void Update()
     {
+
         // Move the object based on the current conveyor
         if (currentConveyorTag == "zConveyor")
         {

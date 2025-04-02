@@ -6,7 +6,7 @@ public class IndustrialArmController : MonoBehaviour
 {
     public Transform armPiece1, armPiece2, armPiece3, armPiece4, armPiece5;
     public Transform rotationPoint1, rotationPoint2, rotationPoint3, rotationPoint4, rotationPoint5;
-    private int rotationSpeed = 5;
+    private int rotationSpeed = 10;
     public float degreesArm1, degreesArm2, degreesArm3, degreesArm4, degreesArm5;
     public bool isArm1Moving, isArm2Moving, isArm3Moving, isArm4Moving, isArm5Moving;
     public Dictionary<string, float> inputDegrees = new Dictionary<string, float>
@@ -38,8 +38,11 @@ public class IndustrialArmController : MonoBehaviour
             Debug.LogError($"Key '{key}' not found.");
         }
     }
+
     private void Update()
     {
+
+
         //inputDegreesArm1 = PLCIOS.arm1Joint1Signal;
         if (!isArm1Moving && degreesArm1 != inputDegrees["Joint1Rotation"])
         {

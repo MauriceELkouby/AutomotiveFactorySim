@@ -10,7 +10,8 @@ public class PLCIOS : MonoBehaviour
     public static PLCIOS Instance;
 
     // Dictionary to store OPC tag values dynamically
-    public Dictionary<string, bool> OpcTagValues = new Dictionary<string, bool>();
+    public Dictionary<string, float> OpcTagValuesFloat = new Dictionary<string, float>();
+    public Dictionary<string, bool> OpcTagValuesBool = new Dictionary<string, bool>();
 
     void Awake()
     {
@@ -25,25 +26,28 @@ public class PLCIOS : MonoBehaviour
     /// </summary>
     public void HandleDataChanged(object sender, OpcDataChangeReceivedEventArgs e)
     {
-        // Convert the value to boolean
-        bool value = Convert.ToBoolean(e.Item.Value.Value);
-
         // Get the tag ID
         string tag = e.MonitoredItem.NodeId.ToString();
 
-        // Store value in dictionary (assuming the dictionary stores boolean values)
-        OpcTagValues[tag] = value;
-
-        // Optionally, log the change or perform additional actions_______________________________________________________________
-        Debug.Log($"Tag {tag} changed to {value}");
+        // Check the type of the value and handle accordingly
+        if (e.Item.Value.Value is bool boolValue)
+        {
+            // Store the boolean value in the dictionary
+            OpcTagValuesBool[tag] = boolValue;
+        }
+        else if (e.Item.Value.Value is float floatValue)
+        {
+            // Store the float value in the dictionary
+            OpcTagValuesFloat[tag] = floatValue;
+            Debug.Log("HELLO"+tag + OpcTagValuesFloat[tag]);
+        }
     }
-
     /// <summary>
     /// Retrieves the latest value for a given OPC tag.
     /// </summary>
-    public bool GetTagValue(string tagNodeId)
+    public bool GetTagValueBool(string tagNodeId)
     {
-        if (OpcTagValues.TryGetValue(tagNodeId, out bool value))
+        if (OpcTagValuesBool.TryGetValue(tagNodeId, out bool value))
         {
             return value;
         }
@@ -52,13 +56,30 @@ public class PLCIOS : MonoBehaviour
         Debug.LogWarning($"Tag {tagNodeId} not found in OpcTagValues dictionary");
         return false; // Default value if tag not found
     }
+    public float GetTagValueFloat(string tagNodeId)
+    {
+        if (OpcTagValuesFloat.TryGetValue(tagNodeId, out float value))
+        {
+            return value;
+        }
+
+        // If the tag is not found, return a default value or throw an exception
+        Debug.LogWarning($"Tag {tagNodeId} not found in OpcTagValues dictionary");
+        return 0; // Default value if tag not found
+    }
     /// <summary>
     /// Sets a new value to an OPC tag and writes it to the server.
     /// </summary>
-    public void SetTagValue(string tagNodeId, bool newValue)
+    public void SetTagValueBool(string tagNodeId, bool newValue)
     {
         // Update dictionary value
-        OpcTagValues[tagNodeId] = newValue;
-        OpcUaClientBehaviour.SetOpcTagValue(tagNodeId, newValue);
+        OpcTagValuesBool[tagNodeId] = newValue;
+        OpcUaClientBehaviour.SetOpcTagValueBool(tagNodeId, newValue);
+    }
+    public void SetTagValueFloat(string tagNodeId, float newValue)
+    {
+        // Update dictionary value
+        OpcTagValuesFloat[tagNodeId] = newValue;
+        OpcUaClientBehaviour.SetOpcTagValueFloat(tagNodeId, newValue);
     }
 }

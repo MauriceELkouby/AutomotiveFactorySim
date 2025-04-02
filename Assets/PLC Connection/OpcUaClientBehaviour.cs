@@ -108,7 +108,21 @@ public class OpcUaClientBehaviour : MonoBehaviour
     /// <summary>
     /// Sets a new value to an OPC tag and writes it to the server.
     /// </summary>
-    public void SetOpcTagValue(string tagNodeId, bool newValue)
+    public void SetOpcTagValueBool(string tagNodeId, bool newValue)
+    {
+        // Write the new value to the OPC server
+        try
+        {
+            client.WriteNode(tagNodeId, newValue);
+            client.ReadNode(tagNodeId);
+            Debug.Log($"Tag {tagNodeId} set to {newValue}");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to write to OPC tag {tagNodeId}: {ex.Message}");
+        }
+    }
+    public void SetOpcTagValueFloat(string tagNodeId, float newValue)
     {
         // Write the new value to the OPC server
         try

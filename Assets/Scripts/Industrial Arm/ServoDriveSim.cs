@@ -1,83 +1,87 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Runtime.InteropServices;
+using UnityEngine;
+
 public class ServoDriveSim : MonoBehaviour
 {
+    [DllImport("Dll1 7")]
+    private static extern void ProcessServoInputs(
+        int[] outputPulse, bool[] inputPulses, float[] inputsVoltage, int[] outputSigns, float[] lastPositions, int[] remainingPulses
+    );
+
     private string industrialArm;
-    public string plcO1;
-    private string plcO2;
-    private string plcI1;
-    private string plcI2;
-    private string armRotation;
-    private bool lastPlcOState = false; // Stores previous plcO state
+    public string[] plcO = new string[5];
+    public string[] plcI = new string[5];
+    private string[] armRotation = new string[5];
     private IndustrialArmController armController;
-    private Coroutine pulseCoroutine;
-    public bool pulse;
-    public bool currentPlcOState = false;
+    private int[] outputPulse = new int[5];
+    private bool[] inputPulses = new bool[5];
+    private float[] inputsVoltage = new float[5];
+    private int[] outputSigns = new int[5];
+    private float[] lastPositions = new float[5];   // Store last known positions
+    private int[] remainingPulses = new int[5];     // Store remaining pulses
+
     void Start()
     {
-        
-        industrialArm = GetHighestParentGameObjectName(gameObject.transform);
-        plcO1 = "ns=2;s=SmartFactory.controlPlc." + industrialArm + "." + gameObject.name + "Pulse";  // OPC UA tag for PLC pulse
-        plcO2 = "ns=2;s=SmartFactory.controlPlc." + industrialArm + "." + gameObject.name + "Sign";   // OPC UA tag for PLC Sign
-        plcI1 = "ns=2;s=SmartFactory.controlPlc." + industrialArm + "." + gameObject.name + "A";      // OPC UA tag for PLC A
-        plcI2 = "ns=2;s=SmartFactory.controlPlc." + industrialArm + "." + gameObject.name + "B";      // OPC UA tag for PLC B
-        armRotation = gameObject.name + "Rotation";         // Industrial arm dictionary tag for rotation
+        industrialArm = GetHighestParentGameObjectName(transform);
         armController = GetComponentInParent<IndustrialArmController>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            plcO[i] = $"ns=2;s=SmartFactory.controlPlc.{industrialArm}.Joint{i + 1}OutputVolts";
+            plcI[i] = $"ns=2;s=SmartFactory.controlPlc.{industrialArm}.Joint{i + 1}InputVolts";
+            armRotation[i] = $"Joint{i + 1}Rotation";
+            lastPositions[i] = 0f;
+            remainingPulses[i] = 0;
+        }
+        StartCoroutine(ServoInputRoutine());
     }
-    private float pulseInterval = 0.1f;
-    private float pulseTimer = 0f;
-    private bool pulseInProgress = false;
-    bool once = false;
-    void FixedUpdate()
+    public float updateInterval = 0.02f; // Update every 20ms (50Hz)    
+    IEnumerator ServoInputRoutine()
     {
-        if (OpcUaClientBehaviour.connected == false) return;
-
-        currentPlcOState = PLCIOS.Instance.GetTagValue(plcO1);
-
-        if (!lastPlcOState && currentPlcOState && !pulseInProgress)
+        while (true)
         {
-            pulseInProgress = true;
-            SendPulsesDirect(); // Call pulses immediately without coroutine
-        }
+            // Wait for the specified interval before processing servo inputs again
+            yield return new WaitForSeconds(updateInterval);
 
-        lastPlcOState = currentPlcOState;
+            if (!OpcUaClientBehaviour.connected) continue;
+
+            // Read voltage inputs from the PLC
+            for (int i = 0; i < 5; i++)
+            {
+                inputsVoltage[i] = PLCIOS.Instance.GetTagValueFloat(plcO[i]);
+                Debug.Log($"Voltage NEW {i}: {inputsVoltage[i]}");
+                Debug.Log($"Voltage LAST {i}: {lastPositions[i]}");
+            }
+
+            Debug.Log("Calling ProcessServoInputs...");
+            ProcessServoInputs(outputPulse, inputPulses, inputsVoltage, outputSigns, lastPositions, remainingPulses);
+            Debug.Log("ProcessServoInputs completed.");
+
+            for (int i = 0; i < 5; i++)
+            {
+                Debug.Log($"outputPulse[{i}]: {outputPulse[i]}, outputSigns[{i}]: {outputSigns[i]}");
+
+                if (outputPulse[i] == 1)
+                {
+                    // Toggle pulses correctly in Unity's FixedUpdate loop
+                    inputPulses[i] = !inputPulses[i];
+                    lastPositions[i] += inputPulses[i] ? (outputSigns[i] == 0 ? (1f / 36f) : -(1f / 36f)) : 0f;
+                    // Simulate encoder feedback
+                    PLCIOS.Instance.SetTagValueFloat(plcI[i], lastPositions[i]);
+
+                    Debug.Log($"Calling UpdateServoPosition({i})...");
+                    UpdateServoPosition(i);
+                }
+            }
+        }
     }
-    void SendPulsesDirect()
+
+    void UpdateServoPosition(int index)
     {
-        Debug.Log("A");
-        if (!PLCIOS.Instance.GetTagValue(plcO2))//forward
-        {
-            PLCIOS.Instance.SetTagValue(plcI1, true);
-            PLCIOS.Instance.SetTagValue(plcI2, false);
-        }
-        else //backwards
-        {
-            PLCIOS.Instance.SetTagValue(plcI1, false);
-            PLCIOS.Instance.SetTagValue(plcI2, true);
-        }
-
-        // Use Invoke or delayed execution to turn off pulses
-        Invoke(nameof(ResetPulses), pulseInterval);
-    }
-
-    void ResetPulses()
-    {
-        Debug.Log("B");
-        if (!PLCIOS.Instance.GetTagValue(plcO2))//forward
-        {
-            PLCIOS.Instance.SetTagValue(plcI1, false);
-            PLCIOS.Instance.SetTagValue(plcI2, true);
-        }
-        else //backwards
-        {
-            PLCIOS.Instance.SetTagValue(plcI1, true);
-            PLCIOS.Instance.SetTagValue(plcI2, false);
-        }
-
-        bool isForward = !PLCIOS.Instance.GetTagValue(plcO2);
-        float incrementValue = isForward ? 5f : -5f;
-
-        armController.UpdateRotation(armRotation, incrementValue);
-        pulseInProgress = false;
+        int isForward = outputSigns[index];
+        float incrementValue = isForward ==0 ? 0.5f : -0.5f;
+        armController.UpdateRotation(armRotation[index], incrementValue);
     }
 
     string GetHighestParentGameObjectName(Transform child)
