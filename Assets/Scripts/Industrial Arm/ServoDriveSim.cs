@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ServoDriveSim : MonoBehaviour
 {
-    [DllImport("Dll1 7")]
+    [DllImport("Dll1 4")]
     private static extern void ProcessServoInputs(
         int[] outputPulse, bool[] inputPulses, float[] inputsVoltage, int[] outputSigns, float[] lastPositions, int[] remainingPulses
     );
@@ -18,7 +18,7 @@ public class ServoDriveSim : MonoBehaviour
     private bool[] inputPulses = new bool[5];
     private float[] inputsVoltage = new float[5];
     private int[] outputSigns = new int[5];
-    private float[] lastPositions = new float[5];   // Store last known positions
+    public float[] lastPositions = new float[5];   // Store last known positions
     private int[] remainingPulses = new int[5];     // Store remaining pulses
 
     void Start()
@@ -45,42 +45,44 @@ public class ServoDriveSim : MonoBehaviour
             yield return new WaitForSeconds(updateInterval);
 
             if (!OpcUaClientBehaviour.connected) continue;
-
+            
             // Read voltage inputs from the PLC
             for (int i = 0; i < 5; i++)
             {
+                if (lastPositions[i] == inputsVoltage[i] && PLCIOS.Instance.GetTagValueFloat(plcI[i]) != inputsVoltage[i])
+                {
+                    PLCIOS.Instance.SetTagValueFloat(plcI[i], lastPositions[i]);
+                }
                 inputsVoltage[i] = PLCIOS.Instance.GetTagValueFloat(plcO[i]);
-                Debug.Log($"Voltage NEW {i}: {inputsVoltage[i]}");
-                Debug.Log($"Voltage LAST {i}: {lastPositions[i]}");
             }
-
             Debug.Log("Calling ProcessServoInputs...");
             ProcessServoInputs(outputPulse, inputPulses, inputsVoltage, outputSigns, lastPositions, remainingPulses);
             Debug.Log("ProcessServoInputs completed.");
-
             for (int i = 0; i < 5; i++)
             {
                 Debug.Log($"outputPulse[{i}]: {outputPulse[i]}, outputSigns[{i}]: {outputSigns[i]}");
-
+                inputPulses[i] = outputPulse[i] == 1 ? true : false;
                 if (outputPulse[i] == 1)
                 {
                     // Toggle pulses correctly in Unity's FixedUpdate loop
-                    inputPulses[i] = !inputPulses[i];
                     lastPositions[i] += inputPulses[i] ? (outputSigns[i] == 0 ? (1f / 36f) : -(1f / 36f)) : 0f;
+                    lastPositions[i] = Mathf.Round(lastPositions[i] * 1_000_000f) / 1_000_000f;
                     // Simulate encoder feedback
-                    PLCIOS.Instance.SetTagValueFloat(plcI[i], lastPositions[i]);
-
                     Debug.Log($"Calling UpdateServoPosition({i})...");
                     UpdateServoPosition(i);
                 }
             }
+            
+
+            
+
         }
     }
 
     void UpdateServoPosition(int index)
     {
         int isForward = outputSigns[index];
-        float incrementValue = isForward ==0 ? 0.5f : -0.5f;
+        float incrementValue = isForward == 0 ? 1f : -1f;
         armController.UpdateRotation(armRotation[index], incrementValue);
     }
 

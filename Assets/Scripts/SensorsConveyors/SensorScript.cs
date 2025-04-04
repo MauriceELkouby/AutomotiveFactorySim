@@ -5,21 +5,24 @@ using UnityEngine;
 public class SensorScript : MonoBehaviour
 {
     private string plcI;
+    public bool touched;
     void Start()
     {
         plcI = "ns=2;s=SmartFactory.controlPlc." + gameObject.name;      // OPC UA tag for PLC A
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Wheel" || other.gameObject.tag == "Car")
+        if (other.gameObject.tag == "Selectable")
         {
+            touched = true;
             PLCIOS.Instance.SetTagValueBool(plcI, true);
         }
-        else { PLCIOS.Instance.SetTagValueBool(plcI, false); }
+        else { touched = false; PLCIOS.Instance.SetTagValueBool(plcI, false); }
         
     }
     void OnTriggerExit(Collider other)
     {
+        touched = false;
         PLCIOS.Instance.SetTagValueBool(plcI, false);
     }
 
