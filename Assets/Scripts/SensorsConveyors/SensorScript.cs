@@ -8,11 +8,11 @@ public class SensorScript : MonoBehaviour
     public bool touched;
     void Start()
     {
-        plcI = "ns=2;s=SmartFactory.controlPlc." + gameObject.name;      // OPC UA tag for PLC A
+        plcI = "ns=2;s=SmartFactory.controlPlc.Misc." + gameObject.name;      // OPC UA tag for PLC A
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Selectable")
+        if (other.gameObject.tag == "Object")
         {
             touched = true;
             PLCIOS.Instance.SetTagValueBool(plcI, true);

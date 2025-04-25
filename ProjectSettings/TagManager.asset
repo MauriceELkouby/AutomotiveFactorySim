@@ -6,6 +6,11 @@ TagManager:
   tags:
   - zConveyor
   - Selectable
+  - Spawner
+  - Car
+  - Deleter
+  - Object
+  - xConveyor
   layers:
   - Default
   - TransparentFX

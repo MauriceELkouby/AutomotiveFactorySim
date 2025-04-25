@@ -8,4 +8,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/factoryfloor.unity
     guid: 1140c8f611c0d294ab45b203eebfa348
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 21a40bd4df1dd734ba004a7abfb8cde0, type: 2}

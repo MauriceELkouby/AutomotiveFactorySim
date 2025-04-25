@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ConveyorMotion : MonoBehaviour
 {
-    public float speed = 20f; // Speed of movement
+    private float speed = 0.2f; // Speed of movement
     private string currentConveyorTag = null; // Tracks the conveyor the object is on
     private string nextConveyorTag = null; // Tracks the next conveyor to transition to
 
@@ -16,7 +16,9 @@ public class ConveyorMotion : MonoBehaviour
         }
         else if (currentConveyorTag == "xConveyor")
         {
-            transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+            transform.position += gameObject.name == "door1" || gameObject.name == "door2" ? 
+                new Vector3(speed * Time.deltaTime, 0, 0): 
+                new Vector3(-speed * Time.deltaTime, 0, 0);
         }
     }
 
@@ -31,6 +33,10 @@ public class ConveyorMotion : MonoBehaviour
         else if (currentConveyorTag == null && (other.CompareTag("zConveyor") || other.CompareTag("xConveyor")))
         {
             currentConveyorTag = other.tag;
+        }
+        if (other.CompareTag("Deleter"))
+        {
+            Destroy(gameObject);
         }
     }
 

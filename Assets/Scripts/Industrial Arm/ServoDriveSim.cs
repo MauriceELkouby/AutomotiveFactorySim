@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ServoDriveSim : MonoBehaviour
 {
-    [DllImport("Dll1 4")]
+    [DllImport("Dll1")]
     private static extern void ProcessServoInputs(
         int[] outputPulse, bool[] inputPulses, float[] inputsVoltage, int[] outputSigns, float[] lastPositions, int[] remainingPulses
     );

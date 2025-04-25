@@ -7,7 +7,7 @@ public class ConveyorScript : MonoBehaviour
     private string plcO;
     void Start()
     {
-        plcO = "ns=2;s=SmartFactory.controlPlc." + gameObject.name;      // OPC UA tag for PLC A
+        plcO = "ns=2;s=SmartFactory.controlPlc.Misc." + gameObject.name;      // OPC UA tag for PLC A
     }
     void Update()
     {
@@ -17,7 +17,7 @@ public class ConveyorScript : MonoBehaviour
         }
         else
         {
-            transform.position = new Vector3(transform.position.x, -0.802f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         }
     }
 
