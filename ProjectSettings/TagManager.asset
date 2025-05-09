@@ -11,6 +11,12 @@ TagManager:
   - Deleter
   - Object
   - xConveyor
+  - left
+  - leftFront
+  - leftBack
+  - rightFront
+  - rightBack
+  - Sensor
   layers:
   - Default
   - TransparentFX

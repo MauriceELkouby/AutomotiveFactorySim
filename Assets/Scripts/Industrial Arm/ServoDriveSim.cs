@@ -64,7 +64,7 @@ public class ServoDriveSim : MonoBehaviour
                 inputPulses[i] = outputPulse[i] == 1 ? true : false;
                 if (outputPulse[i] == 1)
                 {
-                    // Toggle pulses correctly in Unity's FixedUpdate loop
+                    // Toggle pulses
                     lastPositions[i] += inputPulses[i] ? (outputSigns[i] == 0 ? (1f / 36f) : -(1f / 36f)) : 0f;
                     lastPositions[i] = Mathf.Round(lastPositions[i] * 1_000_000f) / 1_000_000f;
                     // Simulate encoder feedback

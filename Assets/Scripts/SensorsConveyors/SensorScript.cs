@@ -10,20 +10,22 @@ public class SensorScript : MonoBehaviour
     {
         plcI = "ns=2;s=SmartFactory.controlPlc.Misc." + gameObject.name;      // OPC UA tag for PLC A
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) 
     {
-        if (other.gameObject.tag == "Object")
+        if (other.gameObject.tag == "Car" || other.gameObject.tag == "Object" || other.gameObject.tag == "leftFront" || other.gameObject.tag == "leftBack" || other.gameObject.tag == "rightFront" || other.gameObject.tag == "rightBack")
         {
             touched = true;
             PLCIOS.Instance.SetTagValueBool(plcI, true);
         }
-        else { touched = false; PLCIOS.Instance.SetTagValueBool(plcI, false); }
         
     }
     void OnTriggerExit(Collider other)
     {
-        touched = false;
-        PLCIOS.Instance.SetTagValueBool(plcI, false);
+        if (other.gameObject.tag == "Car" || other.gameObject.tag == "Object" || other.gameObject.tag == "leftFront" || other.gameObject.tag == "leftBack" || other.gameObject.tag == "rightFront" || other.gameObject.tag == "rightBack")
+        {
+            touched = false;
+            PLCIOS.Instance.SetTagValueBool(plcI, false);
+        }
     }
 
 }

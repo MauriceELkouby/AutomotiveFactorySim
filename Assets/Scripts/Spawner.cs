@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Object"))
+        if (other.gameObject.tag == "Car" || other.gameObject.tag == "Object" || other.gameObject.tag == "leftFront" || other.gameObject.tag == "leftBack" || other.gameObject.tag == "rightFront" || other.gameObject.tag == "rightBack")
         {
             isCollidingWithCar = true;
         }
@@ -17,7 +17,7 @@ public class Spawner : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Object"))
+        if (other.gameObject.tag == "Car" || other.gameObject.tag == "Object" || other.gameObject.tag == "leftFront" || other.gameObject.tag == "leftBack" || other.gameObject.tag == "rightFront" || other.gameObject.tag == "rightBack")
         {
             isCollidingWithCar = false;
         }

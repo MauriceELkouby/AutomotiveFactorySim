@@ -41,9 +41,6 @@ public class IndustrialArmController : MonoBehaviour
 
     private void Update()
     {
-
-
-        //inputDegreesArm1 = PLCIOS.arm1Joint1Signal;
         if (!isArm1Moving && degreesArm1 != inputDegrees["Joint1Rotation"])
         {
             StartCoroutine(RotateAndSetDegrees(armPiece1, armPiece1, rotationPoint1, "BASE", rotationSpeed, inputDegrees["Joint1Rotation"], value => degreesArm1 = value, () => isArm1Moving = false));

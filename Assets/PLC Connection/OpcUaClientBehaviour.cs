@@ -32,8 +32,14 @@ public class OpcUaClientBehaviour : MonoBehaviour
             }
             //opc.tcp://localhost:49320/
             //endpoint
-            //this.client = new OpcClient(ipText.text);
-            this.client = new OpcClient("opc.tcp://localhost:49320/");
+            if(ipText.text == "") {
+                this.client = new OpcClient("opc.tcp://localhost:49320/");
+            }
+            else
+            {
+                this.client = new OpcClient(ipText.text);
+            }
+
             //connect to the server
             this.client.Connect();
             this.statusText.text = "Connected!";

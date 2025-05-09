@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5479128208212817955}
   m_Layer: 0
   m_Name: door1
-  m_TagString: Object
+  m_TagString: leftBack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,8 +95,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.32369685, y: 1.0247302, z: 0.7783539}
-  m_Center: {x: 0.16063917, y: -0, z: -0.023897767}
+  m_Size: {x: 0.15301788, y: 1.0247302, z: 0.7783539}
+  m_Center: {x: 0.07529968, y: -0, z: -0.023897767}
 --- !u!114 &8887867000733079067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,7 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df94170e413cb0459c3dfb97b0954cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
 --- !u!54 &5479128208212817955
 Rigidbody:
   m_ObjectHideFlags: 0
